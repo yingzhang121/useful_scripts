@@ -1,0 +1,29 @@
+#!/bin/sh
+
+HELP_MSG="Usage: $0 fraction R1.fastq [R2.fastq]
+
+The script will downsample fastq files to a given fraction.
+If sampling from paired fastq files, please synchronize R1 and R2 reads first.
+"
+
+## exit the shell(default status code: 1) after printing the message to stderr
+bail() {
+    echo -ne "$1" >&2
+    exit ${2-1}
+}
+
+[ $# -lt 2 ] && {
+    bail "${1}$HELP_MSG"
+}
+
+dis=$(echo $1 \* 100 | bc -l)
+
+[ $# == 2 ] && {
+    echo The program will subsample $dis % reads from the single-ended data $2
+    cat $2 | paste - - - - -d"zzz" | awk -v x=$1 'BEGIN{srand()}; rand()<=x' | tr -s "zzz" "\n" > sub_R1.fastq
+}
+
+[ $# == 3 ] && {
+    echo The program will subsample $dis % reads from the pair-ended data $2 and $3
+    paste -d "\t" $2 $3 | paste - - - - -d"zzz" | awk -v x=$1 'BEGIN{srand()}; rand()<=x' | tr -s "zzz" "\n" | awk -F"\t" '{print $1 > "sub.R1.fastq"; print $2 > "sub.R2.fastq"}'
+}
