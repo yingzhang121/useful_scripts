@@ -5,5 +5,5 @@ fastq_sampler: a script to downsample fastq files using shell commands: paste, a
 
 python_funs.py:
    1) mutseq: mutate fastq sequence; 
-   2) generate a random sequence; 
-   3) generate reverse complement of a sequence
+   2) randomeseq: generate a random sequence; 
+   3) rev_comp: generate reverse complement of a sequence
