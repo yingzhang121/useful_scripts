@@ -7,3 +7,5 @@ python_funs.py:
     1) mutseq: mutate fastq sequence; 
     2) generate a random sequence; 
     3) generate reverse complement of a sequence
+
+extract_softclipped_seq.py: a script to extract softclipped part of a read
