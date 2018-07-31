@@ -11,8 +11,8 @@ def get_parser():
         help="set this parameter to only report soft clipped regions larger than the threshold")
     return parser
 
-def print_softclip_seq( threshold, cigar, qname, seq, end=False ):
-
+def get_digit( cigar, end ):
+    
     int_digit = ""
     if end: 
         for a in cigar[::-1][1:]:
@@ -22,7 +22,11 @@ def print_softclip_seq( threshold, cigar, qname, seq, end=False ):
         for a in cigar:
             if a.isdigit(): int_digit = int_digit + a 
             else: break
-    int_digit = int(int_digit)
+    return int(int_digit)
+
+def print_softclip_seq( threshold, cigar, qname, seq, end=False ):
+
+    int_digit = get_digit( cigar, end )
 
     if int_digit < threshold: return True
 
